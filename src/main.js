@@ -8,6 +8,7 @@ import "element-ui/lib/theme-chalk/index.css";
 //引入 router 并挂载到 Vue上
 //@是一个路径的别名  是src路径  在vue-cli项目下有效   index 是目录的索引文件  默认使用的索引文件  index.js index.vue index.json
 import router from "@/router";
+//使用
 
 //产品级别提示  不开启 开发阶段 提示越详细越好 开发级别提示
 Vue.config.productionTip = false;
