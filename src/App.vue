@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    这时内容
-    <el-button type="success" round>成功按钮</el-button>
+    这是首页
+    <router-view></router-view>
   </div>
 </template>
 
