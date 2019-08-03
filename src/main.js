@@ -11,6 +11,10 @@ import router from "@/router";
 //挂载全局样式
 import "./styles/index.less";
 
+// 引入axios
+import axios from "axios";
+Vue.prototype.$http = axios;
+
 //产品级别提示  不开启 开发阶段 提示越详细越好 开发级别提示
 Vue.config.productionTip = false;
 Vue.use(ElementUI);

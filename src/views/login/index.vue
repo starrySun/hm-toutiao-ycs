@@ -1,101 +1,95 @@
 <template>
   <div class="container">
     <el-card class="mycard">
-      <div>
-        <el-avatar
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        ></el-avatar>
-      </div>
-      <!-- <el-form
-        :model="dynamicValidateForm"
-        ref="dynamicValidateForm"
-        label-width="100px"
-        class="demo-dynamic"
+      <img src="../../assets/images/logo_index.png" alt="" />
+      <!-- 表单 -->
+      <el-form
+        ref="loginForm"
+        :model="loginForm"
+        :rules="loginRules"
+        status-icon
       >
-        <el-form-item
-          prop="email"
-          label="邮箱"
-          :rules="[
-            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-            {
-              type: 'email',
-              message: '请输入正确的邮箱地址',
-              trigger: ['blur', 'change']
-            }
-          ]"
-        >
-          <el-input v-model="dynamicValidateForm.email"></el-input>
+        <el-form-item prop="mobile">
+          <el-input
+            v-model="loginForm.mobile"
+            placeholder="请输入手机号码"
+          ></el-input>
         </el-form-item>
-        <el-form-item
-          v-for="(domain, index) in dynamicValidateForm.domains"
-          :label="'域名' + index"
-          :key="domain.key"
-          :prop="'domains.' + index + '.value'"
-          :rules="{
-            required: true,
-            message: '域名不能为空',
-            trigger: 'blur'
-          }"
-        >
-          <el-input v-model="domain.value"></el-input>
-          <el-button @click.prevent="removeDomain(domain)">删除</el-button>
+        <el-form-item prop="code">
+          <el-input
+            v-model="loginForm.code"
+            placeholder="请输入正确验证码"
+            style="width:236px;margin-right:10px"
+          ></el-input>
+          <el-button>发送验证码</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('dynamicValidateForm')"
-            >提交</el-button
+          <el-checkbox :value="true"
+            >我已阅读并同意用户协议和隐私条款</el-checkbox
           >
-          <el-button @click="addDomain">新增域名</el-button>
-          <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
         </el-form-item>
-      </el-form>-->
+        <el-form-item>
+          <el-button type="primary" style="width:100%" @click="login()"
+            >登陆</el-button
+          >
+        </el-form-item>
+      </el-form>
     </el-card>
   </div>
 </template>
 
 <script>
 export default {
-  // data() {
-  //   return {
-  //     dynamicValidateForm: {
-  //       domains: [
-  //         {
-  //           value: ""
-  //         }
-  //       ],
-  //       email: ""
-  //     }
-  //   };
-  // },
-  // methods: {
-  //   submitForm(formName) {
-  //     this.$refs[formName].validate(valid => {
-  //       if (valid) {
-  //         alert("submit!");
-  //       } else {
-  //         console.log("error submit!!");
-  //         return false;
-  //       }
-  //     });
-  //   },
-  //   resetForm(formName) {
-  //     this.$refs[formName].resetFields();
-  //   },
-  //   removeDomain(item) {
-  //     var index = this.dynamicValidateForm.domains.indexOf(item);
-  //     if (index !== -1) {
-  //       this.dynamicValidateForm.domains.splice(index, 1);
-  //     }
-  //   },
-  //   addDomain() {
-  //     this.dynamicValidateForm.domains.push({
-  //       value: "",
-  //       key: Date.now()
-  //     });
-  //   }
-  // }
+  data() {
+    const checkMobile = (rule, value, callback) => {
+      if (!/^1[3-9]\d{9}$/.test(value)) {
+        return callback(new Error("手机格式错误"));
+      }
+      callback();
+    };
+    return {
+      loginForm: {
+        mobile: "13211111111",
+        code: "246810"
+      },
+      loginRules: {
+        mobile: [
+          { required: true, message: "请输入正确手机号", trigger: "blur" },
+          { validator: checkMobile, trigger: "blur" }
+        ],
+        code: [
+          { required: true, message: "请输入验证码", trigger: "blur" },
+          { len: 6, message: "请输入6位验证码", trigger: "blur" }
+        ]
+      }
+    };
+  },
+  methods: {
+    login() {
+      // 1. 对整个表单进行校验
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          // 2. 校验成功发起登录请求
+          this.$http
+            .post(
+              "http://ttapi.research.itcast.cn/mp/v1_0/authorizations",
+              this.loginForm
+            )
+            .then(() => {
+              // res 是响应对象 res.data数据属于响应主体
+              // console.log(res.data)
+              this.$router.push("/");
+            })
+            .catch(() => {
+              // 请求失败 提示  手机号或验证码错误
+              this.$message.error("手机号或验证码错误");
+            });
+        }
+      });
+    }
+  }
 };
 </script>
-
 <style scoped lang="less">
 .container {
   width: 100%;
@@ -109,6 +103,11 @@ export default {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -60%);
+    img {
+      width: 200px;
+      display: block;
+      margin: 0 auto 20px;
+    }
   }
 }
 </style>
