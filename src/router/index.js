@@ -8,15 +8,41 @@ import Login from "@/views/login";
 import Home from "@/views/home";
 //引入wellcomme组件
 import Wellcome from "@/views/wellcome";
+// 引入404 页面
+import Notfound from "@/views/404";
+import Article from "@/views/article";
+
 Vue.use(VueRouter);
 //实例化对象
 const router = new VueRouter({
   routes: [
-    { path: "/login", name: "login", component: Login },
+    // 跳转路由 $router.push('/login') 或者 $router.push({name:'login'})
+    {
+      path: "/login",
+      name: "login",
+      component: Login
+    },
     {
       path: "/",
       component: Home,
-      children: [{ path: "/", name: "wellcome", component: Wellcome }]
+      children: [
+        {
+          path: "/",
+          name: "welcome",
+          component: Wellcome
+        },
+        {
+          path: "/article",
+          name: "article",
+          component: Article
+        }
+      ]
+    },
+    // 路径 404
+    {
+      path: "*",
+      name: "404",
+      component: Notfound
     }
   ]
 });

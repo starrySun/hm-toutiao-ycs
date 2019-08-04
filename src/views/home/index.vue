@@ -3,40 +3,41 @@
     <el-aside :width="isCollapse ? '60px' : '200px'">
       <div class="logo" :class="{ Menulogo: isCollapse }"></div>
       <el-menu
+        router
         :collapse="isCollapse"
         :collapse-transition="false"
-        default-active="1"
+        :default-active="$route.path"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
       >
         <!-- el-submenu 是菜单项包含子级菜单 -->
         <!-- el-menu-item 是菜单项不包含子级菜单 -->
-        <el-menu-item index="1">
+        <el-menu-item index="/">
           <i class="el-icon-s-home"></i>
           <span slot="title">首页</span>
         </el-menu-item>
-        <el-menu-item index="2">
+        <el-menu-item index="/article">
           <i class="el-icon-document"></i>
           <span slot="title">内容管理</span>
         </el-menu-item>
-        <el-menu-item index="3">
+        <el-menu-item index="/images">
           <i class="el-icon-picture"></i>
           <span slot="title">素材管理</span>
         </el-menu-item>
-        <el-menu-item index="4">
+        <el-menu-item index="/public">
           <i class="el-icon-s-promotion"></i>
           <span slot="title">发表文章</span>
         </el-menu-item>
-        <el-menu-item index="5">
+        <el-menu-item index="/comments">
           <i class="el-icon-chat-dot-round"></i>
           <span slot="title">评论管理</span>
         </el-menu-item>
-        <el-menu-item index="6">
+        <el-menu-item index="/fans">
           <i class="el-icon-present"></i>
           <span slot="title">粉丝管理</span>
         </el-menu-item>
-        <el-menu-item index="7">
+        <el-menu-item index="/setting">
           <i class="el-icon-setting"></i>
           <span slot="title">个人设置</span>
         </el-menu-item>
