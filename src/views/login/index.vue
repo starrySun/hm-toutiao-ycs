@@ -83,9 +83,9 @@ export default {
               "http://ttapi.research.itcast.cn/mp/v1_0/authorizations",
               this.loginForm
             )
-            .then(() => {
+            .then(res => {
               // res 是响应对象 res.data数据属于响应主体
-              // console.log(res.data)
+              console.log(res.data);
               this.$router.push("/");
             })
             .catch(() => {
