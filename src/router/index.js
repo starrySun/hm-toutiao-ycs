@@ -11,6 +11,7 @@ import Wellcome from "@/views/wellcome";
 // 引入404 页面
 import Notfound from "@/views/404";
 import Article from "@/views/article";
+import Store from "@/store";
 
 Vue.use(VueRouter);
 //实例化对象
@@ -46,5 +47,25 @@ const router = new VueRouter({
     }
   ]
 });
-//导出router
+//  导航守卫
+router.beforeEach((to, from, next) => {
+  // // 如果是登陆路由放行
+  // if (to.path === "/login") return next();
+  // //如果登陆时，没有token 拦截
+  // if (!Store.getUser().token) return next("/login");
+  // next();
+  if (to.path !== "/login" && !Store.getUser().token) return next("/login");
+  next();
+});
+// router.beforeEach((to, from, next) => {
+// // 1. 如果是登录路由  放行
+// if (to.path === '/login') return next()
+// // 2. 获取用户信息 如果没有 拦截登录
+// if (!store.getUser().token) return next('/login')
+// // 3. 放行
+// next()
+//   if (to.path !== "/login" && !store.getUser().token) return next("/login");
+//   next();
+// });
+// 导出router
 export default router;

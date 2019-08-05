@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import store from "@/store";
+
 export default {
   data() {
     // 自定义校验函数
@@ -75,23 +77,34 @@ export default {
   methods: {
     login() {
       // 1. 对整个表单进行校验
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate(async valid => {
         if (valid) {
           // 2. 校验成功发起登录请求
-          this.$http
-            .post(
-              "http://ttapi.research.itcast.cn/mp/v1_0/authorizations",
-              this.loginForm
-            )
-            .then(res => {
-              // res 是响应对象 res.data数据属于响应主体
-              console.log(res.data);
-              this.$router.push("/");
-            })
-            .catch(() => {
-              // 请求失败 提示  手机号或验证码错误
-              this.$message.error("手机号或验证码错误");
-            });
+          // this.$http
+          //   .post(
+          //     "http://ttapi.research.itcast.cn/mp/v1_0/authorizations",
+          //     this.loginForm
+          //   )
+          //   .then(res => {
+          //     // res 是响应对象 res.data数据属于响应主体
+          //     console.log(res.data);
+          //     store.setUser(res.data.data);
+          //     this.$router.push("/");
+          //   })
+          //   .catch(() => {
+          //     // 请求失败 提示  手机号或验证码错误
+          //
+          //   });
+
+          try {
+            const {
+              data: { data }
+            } = await this.$http.post("authorizations", this.loginForm);
+            store.setUser(data);
+            this.$router.push("/");
+          } catch (e) {
+            this.$message.error("手机号或验证码错误");
+          }
         }
       });
     }
