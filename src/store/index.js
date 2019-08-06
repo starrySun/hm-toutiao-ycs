@@ -11,5 +11,8 @@ export default {
   // 获取信息
   getUser() {
     return JSON.parse(window.sessionStorage.getItem(KEY) || "{}");
+  },
+  clearUser() {
+    return window.sessionStorage.removeItem(KEY);
   }
 };
